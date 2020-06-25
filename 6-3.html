@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스톱워치</title>
+    <style>
+        * {
+            background-color: powderblue;
+            box-sizing: border-box;
+
+        }
+
+        #timer {
+            font-size: 30px;
+            margin-left: 5px;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            margin-top: 30px;
+            background-color: blanchedalmond;
+            text-align: center;
+            height: 40px;
+        }
+
+        caption {
+            font-size: 40px;
+            color: black;
+            font-style: italic;
+
+        }
+    </style>
+    <script>
+        window.onload = function () {
+            var startButton = document.getElementById("start");
+            var stopButton = document.getElementById("stop");
+            var initialButton = document.getElementById("initial");
+            var display = document.getElementById("display");
+            var record = document.getElementById("my-tbody");
+            var startTime, timer, now, tableCount;
+            startButton.onclick = start;
+
+            function start() {
+                startButton.onclick = null;
+                stopButton.onclick = stop;
+                initialButton.onclick = initial;
+                startTime = new Date();
+                timer = setInterval(function () {
+                    now = new Date();
+                    display.innerHTML = ((now - startTime) / 1000).toFixed(2);
+                }, 10);
+            }
+
+            function stop() {
+                clearInterval(timer);
+                startButton.onclick = start;
+            }
+
+            function initial() {
+                clearInterval(timer);
+                startButton.onclick = start;
+                display.innerHTML = "0.00";
+                var row = record.insertRow(record.rows.length);
+                var count = row.insertCell(0);
+                var startTimeR = row.insertCell(1);
+                var endTimeR = row.insertCell(2);
+                var totalR = row.insertCell(3);
+                tableCount = record.rows.length++;
+                count.innerHTML = tableCount;
+                startTimeR.innerHTML = startTime.toUTCString();
+                endTimeR.innerHTML = now.toUTCString();
+                totalR.innerHTML = ((now - startTime) / 1000 / 60).toFixed(2) + " 분";
+            }
+        };
+    </script>
+</head>
+
+<body>
+    <div id="timer">
+        <p id="display">0.00</p>
+        <input id="start" type="button" value="start">
+        <input id="stop" type="button" value="stop">
+        <input id="initial" type="button" value="initial">
+
+    </div>
+
+    <div id="time-table">
+        <table id="record" width="100%">
+            <colgroup>
+                <col width="10%">
+                <col width="30%">
+                <col width="30%">
+                <col width="30%">
+            </colgroup>
+            <thead>
+                <caption style="margin-bottom: 5px;">Time Record</caption>
+                <tr>
+                    <th>count</th>
+                    <th>start time</th>
+                    <th>end time</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody id="my-tbody">
+
+
+            </tbody>
+        </table>
+    </div>
+
+
+</body>
+
+</html>
